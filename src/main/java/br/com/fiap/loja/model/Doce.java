@@ -3,6 +3,14 @@ package br.com.fiap.loja.model;
 import java.time.LocalDate;
 
 public class Doce {
+    public Doce(int codigo, String nome, double valor, double peso, LocalDate dataValidade) {
+        this.codigo = codigo;
+        this.nome = nome;
+        this.valor = valor;
+        this.peso = peso;
+        this.dataValidade = dataValidade;
+    }
+
     private int codigo;
     private String nome;
     private double valor;
