@@ -1,24 +1,11 @@
-package br.com.fiap.loja.model;
+package br.com.fiap.dto.doce;
 
 import java.time.LocalDate;
 
-public class Doce {
-
-    public Doce(){}
-
-    public Doce(int codigo, String nome, double valor, double peso, LocalDate dataValidade) {
-        this.codigo = codigo;
-        this.nome = nome;
-        this.valor = valor;
-        this.peso = peso;
-        this.dataValidade = dataValidade;
-    }
-
-
+public class DetalhesDoceDto {
     private int codigo;
     private String nome;
     private double valor;
-    private double peso;
     private LocalDate dataValidade;
 
     public int getCodigo() {
@@ -43,14 +30,6 @@ public class Doce {
 
     public void setValor(double valor) {
         this.valor = valor;
-    }
-
-    public double getPeso() {
-        return peso;
-    }
-
-    public void setPeso(double peso) {
-        this.peso = peso;
     }
 
     public LocalDate getDataValidade() {
