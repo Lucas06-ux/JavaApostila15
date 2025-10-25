@@ -6,6 +6,7 @@ import br.com.fiap.exception.EntidadeNaoEncontrada;
 import br.com.fiap.loja.dao.DoceDAO;
 import br.com.fiap.loja.model.Doce;
 import jakarta.inject.Inject;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
@@ -58,7 +59,7 @@ public class DoceResource {
     }
 
     @POST
-    public Response criar (CadastroDoceDto dto, @Context UriInfo uriInfo) throws SQLException {
+    public Response criar (@Valid CadastroDoceDto dto, @Context UriInfo uriInfo) throws SQLException {
         //Cria um doce com base nos dados do DTO
         Doce doce = mapper.map(dto, Doce.class);
 
