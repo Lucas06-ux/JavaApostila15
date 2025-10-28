@@ -17,6 +17,9 @@ public class Avaliacao {
         this.codigoDoce = codigoDoce;
     }
 
+    public Avaliacao() {
+    }
+
     public int getCodigo() {
         return codigo;
     }

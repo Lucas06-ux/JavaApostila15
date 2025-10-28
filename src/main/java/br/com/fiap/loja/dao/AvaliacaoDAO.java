@@ -1,6 +1,8 @@
 package br.com.fiap.loja.dao;
 
 
+import br.com.fiap.dto.avaliacao.DetalhesAvaliacaoDto;
+import br.com.fiap.exception.EntidadeNaoEncontrada;
 import br.com.fiap.loja.model.Avaliacao;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -16,13 +18,13 @@ import java.util.List;
 
 @ApplicationScoped
 public class AvaliacaoDAO {
-
+    private Connection conexao;
     @Inject
     private DataSource dataSource;
 
     public List<Avaliacao> listar() throws SQLException{
         try(Connection conexao = dataSource.getConnection()){
-            PreparedStatement stmt = conexao.prepareStatement("select * from t_tdspw_avaliacao");
+            PreparedStatement stmt = conexao.prepareStatement("select * from t_tdspw_avaliacao where cd_doce = ?");
             ResultSet rs = stmt.executeQuery();
             List<Avaliacao> lista = new ArrayList<>();
             while (rs.next()){
@@ -36,7 +38,7 @@ public class AvaliacaoDAO {
     public void cadastrar(Avaliacao avaliacao) throws SQLException{
         try(Connection conexao = dataSource.getConnection()){
             PreparedStatement stmt = conexao.prepareStatement("insert into t_tdspw_avaliacao (cd_avaliacao," +
-                    "ds_avaliacao, vl_nota, dt_cadastro, cd_doce) values (sq_tdspw_avaliacao.nextavl, ?,?, sysdate,?)", new String[]{"cd_avaliacao"});
+                    "ds_avaliacao, vl_nota, dt_cadastro, cd_doce) values (sq_tdspw_avaliacao.nextval, ?,?, sysdate,?)", new String[]{"cd_avaliacao"});
             stmt.setString(1, avaliacao.getDescricao());
             stmt.setDouble(2, avaliacao.getNota());
             stmt.setInt(3, avaliacao.getCodigoDoce());
@@ -49,6 +51,20 @@ public class AvaliacaoDAO {
             }
         }
     }
+    public List<Avaliacao> buscarPorDoce(int codigoDoce) throws SQLException{
+        try(Connection conexao = dataSource.getConnection()) {
+            PreparedStatement stmt = conexao.prepareStatement("select * from t_tdspw_avaliacao where cd_doce = ?");
+            stmt.setInt(1, codigoDoce);
+            ResultSet rs = stmt.executeQuery();
+            List <Avaliacao> lista = new ArrayList<>();
+            while(rs.next()){
+                Avaliacao avaliacao = parseAvaliacao(rs);
+                lista.add(avaliacao);
+            }
+            return lista;
+        }
+
+    }
 
     private Avaliacao parseAvaliacao(ResultSet rs) throws SQLException{
         int codigo = rs.getInt("cd_avaliacao");
@@ -58,4 +74,5 @@ public class AvaliacaoDAO {
         int codigoDoce = rs.getInt("cd_doce");
         return new Avaliacao(codigo, descricao, dataCadastro, nota, codigoDoce);
     }
+    
 }

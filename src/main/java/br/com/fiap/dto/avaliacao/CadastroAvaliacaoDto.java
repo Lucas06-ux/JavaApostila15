@@ -7,18 +7,18 @@ import jakarta.validation.constraints.Size;
 public class CadastroAvaliacaoDto {
 
     @Size(max = 200)
-    private String descricaoNota;
+    private String descricao;
 
     @PositiveOrZero
     @Max(10)
     private double nota;
 
-    public String getDescricaoNota() {
-        return descricaoNota;
+    public String getDescricao() {
+        return descricao;
     }
 
-    public void setDescricaoNota(String descricaoNota) {
-        this.descricaoNota = descricaoNota;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
     public double getNota() {

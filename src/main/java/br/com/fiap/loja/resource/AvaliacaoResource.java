@@ -12,6 +12,7 @@ import jakarta.ws.rs.core.*;
 import org.modelmapper.ModelMapper;
 
 import java.sql.SQLException;
+import java.util.List;
 
 @Path("/doces/{codigoDoce}/avaliacoes")
 @Produces(MediaType.APPLICATION_JSON)
@@ -20,19 +21,24 @@ public class AvaliacaoResource {
     @Inject
     private AvaliacaoDAO avaliacaoDAO;
     @Inject
-    private ModelMapper modelMapper;
+    private ModelMapper mapper;
 
     @POST
     public Response criar (@PathParam("codigoDoce") int codigoDoce,
                        @Valid CadastroAvaliacaoDto dto, @Context UriInfo uriInfo) throws SQLException {
 
-        Avaliacao avaliacao = modelMapper.map(dto, Avaliacao.class);
+        Avaliacao avaliacao = mapper.map(dto, Avaliacao.class);
         avaliacao.setCodigoDoce(codigoDoce);
 
         avaliacaoDAO.cadastrar(avaliacao);
 
         UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder().path(String.valueOf(avaliacao.getCodigo()));
-        return Response.created(uriBuilder.build()).entity(modelMapper.map(avaliacao, DetalhesAvaliacaoDto.class)).build();
+        return Response.created(uriBuilder.build()).entity(mapper.map(avaliacao, DetalhesAvaliacaoDto.class)).build();
 
+    }
+
+    @GET
+    public List<DetalhesAvaliacaoDto> listar(@PathParam("codigoDoce")int codigoDoce) throws SQLException{
+       return avaliacaoDAO.buscarPorDoce(codigoDoce);
     }
 }

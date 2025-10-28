@@ -9,6 +9,17 @@ public class DetalhesAvaliacaoDto {
     private double nota;
     private int codigoDoce;
 
+    public DetalhesAvaliacaoDto() {
+    }
+
+    public DetalhesAvaliacaoDto(int codigo, String descricao, LocalDate dataCadastro, double nota, int codigoDoce) {
+        this.codigo = codigo;
+        this.descricao = descricao;
+        this.dataCadastro = dataCadastro;
+        this.nota = nota;
+        this.codigoDoce = codigoDoce;
+    }
+
     public int getCodigo() {
         return codigo;
     }
