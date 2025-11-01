@@ -3,6 +3,7 @@ package br.com.fiap.loja.resource;
 
 import br.com.fiap.dto.avaliacao.CadastroAvaliacaoDto;
 import br.com.fiap.dto.avaliacao.DetalhesAvaliacaoDto;
+import br.com.fiap.dto.avaliacao.MediaAvaliacaoDto;
 import br.com.fiap.loja.dao.AvaliacaoDAO;
 import br.com.fiap.loja.model.Avaliacao;
 import jakarta.inject.Inject;
@@ -39,6 +40,14 @@ public class AvaliacaoResource {
 
     @GET
     public List<DetalhesAvaliacaoDto> listar(@PathParam("codigoDoce")int codigoDoce) throws SQLException{
-       return avaliacaoDAO.buscarPorDoce(codigoDoce);
+       return avaliacaoDAO.buscarPorDoce(codigoDoce).stream().map(d -> mapper.map(d, DetalhesAvaliacaoDto.class)).toList();
+    }
+
+    @GET
+    @Path("/status")
+    public Response media(@PathParam("codigoDoce") int codigoDoce) throws SQLException{
+        MediaAvaliacaoDto status = avaliacaoDAO.media(codigoDoce);
+        return Response.ok(status).build();
+
     }
 }
