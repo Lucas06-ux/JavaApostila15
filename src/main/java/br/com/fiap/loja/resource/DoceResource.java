@@ -30,6 +30,14 @@ public class DoceResource {
     @Inject
     private ModelMapper mapper;
 
+    @GET
+    @Path("/pesquisa")
+    public List<DetalhesDoceDto> buscar(@QueryParam("valor") double valor) throws SQLException{
+        return  doceDAO.buscarPorPrecoMenor(valor).stream().map(
+                d -> mapper.map(d, DetalhesDoceDto.class)
+        ).toList();
+    }
+
     @DELETE
     @Path("/{id}")
     public Response remover(@PathParam("id") int codigo) throws SQLException, EntidadeNaoEncontrada{

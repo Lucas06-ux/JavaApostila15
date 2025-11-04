@@ -21,6 +21,22 @@ public class DoceDAO {
     @Inject
     private DataSource dataSource;
 
+    public List<Doce> buscarPorPrecoMenor(double valor) throws SQLException {
+        try(Connection conexao = dataSource.getConnection()){
+            PreparedStatement stmt = conexao.prepareStatement("select * from t_tdspw_doce where vl_doce <= ?");
+            stmt.setDouble(1, valor);
+            ResultSet rs = stmt.executeQuery();
+            List<Doce> lista = new ArrayList<>();
+            while(rs.next()){
+                Doce doce = parseDoce(rs);
+                lista.add(doce);
+            }
+            return lista;
+
+        }
+    }
+
+
     public List<Doce> listar() throws SQLException{
         try(Connection conexao = dataSource.getConnection()){
             PreparedStatement stmt = conexao.prepareStatement("select * from t_tdspw_doce");
@@ -98,6 +114,6 @@ public class DoceDAO {
         double peso = rs.getDouble("vl_peso");
         double valor = rs.getDouble("vl_doce");
         LocalDate dataValidade = rs.getObject("dt_validade", LocalDate.class);
-        return  new Doce(codigo, nome, peso, valor, dataValidade);
+        return  new Doce(codigo, nome, valor, peso, dataValidade);
     }
 }

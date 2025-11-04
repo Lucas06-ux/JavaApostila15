@@ -23,6 +23,7 @@ public class AvaliacaoDAO {
     @Inject
     private DataSource dataSource;
 
+
     public List<Avaliacao> listar() throws SQLException{
         try(Connection conexao = dataSource.getConnection()){
             PreparedStatement stmt = conexao.prepareStatement("select * from t_tdspw_avaliacao where cd_doce = ?");
